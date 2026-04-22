@@ -8,11 +8,22 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
-import { Trash2 } from "lucide-react";
+import { Trash2, Sun, Moon, Monitor } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 export default function SettingsPage() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   return (
     <div className="max-w-xl space-y-6">
       <PageHeader title="Settings" description="Manage your account and preferences." />
@@ -81,16 +92,27 @@ export default function SettingsPage() {
         </CardHeader>
         <CardContent>
           <Label className="text-[12px] font-[550]">Theme</Label>
-          <Select defaultValue="system">
-            <SelectTrigger className="mt-1.5 w-44 text-[12px] h-9">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="light" className="text-[12px]">Light</SelectItem>
-              <SelectItem value="dark" className="text-[12px]">Dark</SelectItem>
-              <SelectItem value="system" className="text-[12px]">System</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="mt-2.5 flex gap-2">
+            {([
+              { value: "light", label: "Light", Icon: Sun },
+              { value: "dark", label: "Dark", Icon: Moon },
+              { value: "system", label: "System", Icon: Monitor },
+            ] as const).map(({ value, label, Icon }) => (
+              <button
+                key={value}
+                onClick={() => setTheme(value)}
+                className={cn(
+                  "flex flex-1 flex-col items-center gap-1.5 rounded-xl border py-3 text-[11px] font-medium transition-all duration-200",
+                  mounted && theme === value
+                    ? "border-[var(--brand)]/30 bg-[var(--brand)]/[0.04] text-foreground"
+                    : "border-border/30 text-muted-foreground/40 hover:border-border/60 hover:text-muted-foreground"
+                )}
+              >
+                <Icon className="h-4 w-4" strokeWidth={1.6} />
+                {label}
+              </button>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
