@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Logo } from "@/components/shared/logo";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -77,7 +78,8 @@ export function Navbar() {
         </nav>
 
         {/* Right CTA */}
-        <div className="relative z-10 hidden items-center gap-2 md:flex">
+        <div className="relative z-10 hidden items-center gap-1 md:flex">
+          <ThemeToggle />
           <Link
             href="/auth/signin"
             className="rounded-full px-4 py-[6px] text-[13px] font-medium text-muted-foreground/60 transition-colors hover:text-foreground"
@@ -93,9 +95,11 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile toggle */}
+        {/* Mobile right */}
+        <div className="relative z-10 flex items-center gap-1 md:hidden">
+          <ThemeToggle />
         <button
-          className="relative z-10 flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-muted/40 md:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-muted/40"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -116,6 +120,7 @@ export function Navbar() {
             />
           </div>
         </button>
+        </div>
       </div>
 
       {/* Mobile nav */}

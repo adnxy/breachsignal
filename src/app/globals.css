@@ -254,17 +254,35 @@
       0 1px 2px oklch(0 0 0 / 0.04),
       0 4px 12px oklch(0 0 0 / 0.03);
   }
+  .dark .premium-shadow {
+    box-shadow:
+      0 0 0 1px oklch(1 0 0 / 0.04),
+      0 1px 2px oklch(0 0 0 / 0.20),
+      0 4px 12px oklch(0 0 0 / 0.25);
+  }
   .premium-shadow-hover {
     box-shadow:
       0 0 0 1px oklch(0 0 0 / 0.06),
       0 2px 4px oklch(0 0 0 / 0.05),
       0 8px 24px oklch(0 0 0 / 0.06);
   }
+  .dark .premium-shadow-hover {
+    box-shadow:
+      0 0 0 1px oklch(1 0 0 / 0.06),
+      0 2px 4px oklch(0 0 0 / 0.25),
+      0 8px 24px oklch(0 0 0 / 0.30);
+  }
   .premium-shadow-lg {
     box-shadow:
       0 0 0 1px oklch(0 0 0 / 0.06),
       0 4px 8px oklch(0 0 0 / 0.04),
       0 16px 48px oklch(0 0 0 / 0.08);
+  }
+  .dark .premium-shadow-lg {
+    box-shadow:
+      0 0 0 1px oklch(1 0 0 / 0.05),
+      0 4px 8px oklch(0 0 0 / 0.30),
+      0 16px 48px oklch(0 0 0 / 0.40);
   }
   .sidebar-glow {
     box-shadow:
@@ -299,7 +317,7 @@
 }
 
 @keyframes feed-flash {
-  0% { background-color: oklch(0.65 0.20 18 / 0.08); }
+  0% { background-color: var(--severity-critical-bg); }
   100% { background-color: transparent; }
 }
 

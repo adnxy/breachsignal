@@ -3,6 +3,7 @@
 import { Bell, Search, Menu, Command, ChevronRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -61,6 +62,8 @@ export function TopBar({ onMenuClick }: { onMenuClick?: () => void }) {
             <Command className="h-2 w-2" />K
           </kbd>
         </button>
+
+        <ThemeToggle />
 
         {/* Notifications */}
         <Link

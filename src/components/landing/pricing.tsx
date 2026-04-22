@@ -70,7 +70,7 @@ export function Pricing() {
           <p className="mb-3 sm:mb-4 text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/40">
             Pricing
           </p>
-          <h2 className="font-serif text-[1.5rem] sm:text-[2rem] font-[400] tracking-[-0.02em] text-[var(--brand-deep)] md:text-[2.5rem]">
+          <h2 className="font-serif text-[1.5rem] sm:text-[2rem] font-[400] tracking-[-0.02em] text-foreground md:text-[2.5rem]">
             Start free, scale when ready
           </h2>
         </motion.div>

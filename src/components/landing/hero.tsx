@@ -31,7 +31,7 @@ export function Hero() {
           </motion.div>
 
           <motion.h1
-            className="font-serif text-[2rem] font-[400] leading-[1.1] tracking-[-0.025em] text-balance text-[var(--brand-deep)] sm:text-[3rem] md:text-[4.25rem]"
+            className="font-serif text-[2rem] font-[400] leading-[1.1] tracking-[-0.025em] text-balance text-foreground sm:text-[3rem] md:text-[4.25rem]"
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.06, ease }}
