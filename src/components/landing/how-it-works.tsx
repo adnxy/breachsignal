@@ -1,51 +1,69 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Link2, Scan, BellRing } from "lucide-react";
+
+const ease = [0.16, 1, 0.3, 1] as const;
 
 const steps = [
-  { number: "01", icon: Link2, title: "Connect your dependencies", description: "Upload a package.json, paste a lockfile, or manually search and add the packages you want to monitor." },
-  { number: "02", icon: Scan, title: "We monitor live advisories", description: "Our system continuously scrapes GitHub Security Advisories, CVE databases, and registry feeds for new threats." },
-  { number: "03", icon: BellRing, title: "Get notified instantly", description: "When a vulnerability or suspicious event affects your stack, you know immediately via Slack, email, or PagerDuty." },
+  {
+    number: "01",
+    title: "Connect",
+    description: "Upload a manifest or search packages. Supports npm, PyPI, Go, Maven, and more.",
+  },
+  {
+    number: "02",
+    title: "Monitor",
+    description: "We crawl 100+ sources continuously. New threats are classified in under 30 seconds.",
+  },
+  {
+    number: "03",
+    title: "Get alerted",
+    description: "Instant notifications via Slack, email, or PagerDuty with severity and remediation steps.",
+  },
 ];
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="border-t border-border bg-muted/30 py-24 md:py-32">
-      <div className="mx-auto max-w-[1080px] px-6">
+    <section id="how-it-works" className="relative py-16 sm:py-24 md:py-32 border-t border-border/30">
+      <div className="mx-auto max-w-[1080px] px-5 sm:px-6">
         <motion.div
-          className="mx-auto max-w-md text-center mb-14"
+          className="mx-auto max-w-lg text-center mb-10 sm:mb-16"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.5, ease }}
         >
-          <h2 className="font-serif text-[2rem] font-[400] tracking-[-0.02em] md:text-[2.5rem]">
+          <p className="mb-3 sm:mb-4 text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/40">
+            How it works
+          </p>
+          <h2 className="font-serif text-[1.5rem] sm:text-[2rem] font-[400] tracking-[-0.02em] md:text-[2.75rem]">
             Three steps to peace of mind
           </h2>
-          <p className="mt-4 text-[15px] text-muted-foreground leading-relaxed">
-            Set up in under two minutes. No configuration required.
-          </p>
         </motion.div>
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="relative grid gap-8 sm:gap-0 md:grid-cols-3">
+          {/* Connecting line — desktop */}
+          <div className="hidden md:block absolute top-[28px] left-[16.67%] right-[16.67%] h-px bg-border/25" />
+
           {steps.map((step, i) => (
             <motion.div
               key={step.number}
-              className="rounded-2xl border border-border bg-card p-7 shadow-sm"
+              className="relative text-center px-4 sm:px-8 md:py-0"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: i * 0.1, duration: 0.5, ease }}
             >
-              <div className="flex items-center gap-3 mb-5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted">
-                  <step.icon className="h-[17px] w-[17px] text-foreground/80" strokeWidth={1.8} />
-                </div>
-                <span className="font-serif text-[28px] font-[350] leading-none text-muted-foreground/50 select-none">{step.number}</span>
+              <div className="relative mx-auto mb-4 sm:mb-5 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl sm:rounded-2xl border border-border/40 bg-card">
+                <span className="text-[16px] sm:text-[18px] font-semibold tracking-[-0.02em] text-foreground/60 tabular-nums">
+                  {step.number}
+                </span>
               </div>
-              <h3 className="text-[15px] font-semibold">{step.title}</h3>
-              <p className="mt-2 text-[13px] text-muted-foreground leading-[1.7]">{step.description}</p>
+
+              <h3 className="text-[14px] sm:text-[15px] font-semibold tracking-[-0.01em]">{step.title}</h3>
+              <p className="mt-1.5 sm:mt-2 text-[12px] sm:text-[13px] text-muted-foreground/45 leading-relaxed max-w-[240px] mx-auto">
+                {step.description}
+              </p>
             </motion.div>
           ))}
         </div>
