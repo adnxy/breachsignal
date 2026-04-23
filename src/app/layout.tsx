@@ -49,7 +49,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col antialiased font-sans">
         <SessionProvider>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             {children}
             <Toaster position="bottom-right" />
           </ThemeProvider>

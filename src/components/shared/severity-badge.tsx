@@ -20,7 +20,7 @@ const config: Record<Severity, { label: string; class: string }> = {
   },
   info: {
     label: "Info",
-    class: "bg-muted/60 text-muted-foreground/70 ring-border/50",
+    class: "bg-muted text-muted-foreground ring-border",
   },
 };
 
@@ -28,11 +28,11 @@ export function SeverityBadge({ severity, className: extraClass }: { severity: S
   const c = config[severity];
   return (
     <span className={cn(
-      "inline-flex items-center gap-1.5 rounded-md px-2 py-[3px] text-[10px] font-semibold leading-none ring-1 ring-inset transition-colors duration-150",
+      "inline-flex items-center gap-1.5 rounded px-2 py-0.5 text-[10px] font-semibold leading-none ring-1 ring-inset",
       c.class,
       extraClass,
     )}>
-      <span className="h-[5px] w-[5px] rounded-full bg-current opacity-80" />
+      <span className="h-1.5 w-1.5 rounded-full bg-current" />
       {c.label}
     </span>
   );

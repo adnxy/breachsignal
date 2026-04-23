@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MOCK_FEED, SEVERITY_CONFIG } from "@/lib/constants";
@@ -9,22 +8,9 @@ import { cn } from "@/lib/utils";
 import type { Severity, SignalType, FeedEvent } from "@/types";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Search,
-  Pause,
-  Play,
-  ShieldAlert,
-  AlertTriangle,
-  Bug,
-  Trash2,
-  FileText,
-  UserX,
-  Lock,
-  Radio,
-  ExternalLink,
-  RefreshCw,
-  Zap,
-  Globe,
-  TrendingUp,
+  Search, Pause, Play, ShieldAlert, AlertTriangle, Bug, Trash2,
+  FileText, UserX, Lock, Radio, RefreshCw, Zap, Globe,
+  TrendingUp, Clock, ArrowUpRight,
 } from "lucide-react";
 
 const iconMap: Record<SignalType, React.ElementType> = {
@@ -39,14 +25,6 @@ const iconMap: Record<SignalType, React.ElementType> = {
 };
 
 const severities: Severity[] = ["critical", "high", "medium", "low"];
-
-const threatLevel: Record<Severity, { pct: number; label: string }> = {
-  critical: { pct: 100, label: "Critical" },
-  high: { pct: 75, label: "High" },
-  medium: { pct: 45, label: "Medium" },
-  low: { pct: 20, label: "Low" },
-  info: { pct: 5, label: "Info" },
-};
 
 interface FeedItemResponse {
   id: string;
@@ -86,6 +64,10 @@ function formatTimeAgo(date: Date): string {
   return `${Math.floor(hours / 24)}d ago`;
 }
 
+function formatTime(date: Date): string {
+  return date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+}
+
 let mockIndex = 0;
 function createMockEvent(): MappedEvent {
   const source = MOCK_FEED[mockIndex % MOCK_FEED.length];
@@ -109,8 +91,14 @@ export default function LiveFeedPage() {
   const [loading, setLoading] = useState(true);
   const [useMock, setUseMock] = useState(false);
   const [totalCount, setTotalCount] = useState(2431);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const lastFetchRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const fetchFeed = useCallback(
     async (isPolling = false) => {
@@ -189,9 +177,7 @@ export default function LiveFeedPage() {
     await fetchFeed(false);
   }, [fetchFeed]);
 
-  useEffect(() => {
-    fetchFeed(false);
-  }, [fetchFeed]);
+  useEffect(() => { fetchFeed(false); }, [fetchFeed]);
 
   useEffect(() => {
     if (paused || useMock) {
@@ -199,12 +185,9 @@ export default function LiveFeedPage() {
       return;
     }
     pollRef.current = setInterval(() => fetchFeed(true), 30_000);
-    return () => {
-      if (pollRef.current) clearInterval(pollRef.current);
-    };
+    return () => { if (pollRef.current) clearInterval(pollRef.current); };
   }, [paused, fetchFeed, useMock]);
 
-  // Mock: new item every 7–12s
   useEffect(() => {
     if (!useMock || paused) return;
     let timeout: ReturnType<typeof setTimeout>;
@@ -223,16 +206,12 @@ export default function LiveFeedPage() {
     return () => clearTimeout(timeout);
   }, [useMock, paused]);
 
-  // Gentle counter
   useEffect(() => {
     if (paused) return;
     let timeout: ReturnType<typeof setTimeout>;
     const tick = () => {
       const delay = 4000 + Math.random() * 4000;
-      timeout = setTimeout(() => {
-        setTotalCount((c) => c + 1);
-        tick();
-      }, delay);
+      timeout = setTimeout(() => { setTotalCount((c) => c + 1); tick(); }, delay);
     };
     tick();
     return () => clearTimeout(timeout);
@@ -240,12 +219,7 @@ export default function LiveFeedPage() {
 
   const filtered = events.filter((e) => {
     if (severityFilter && e.severity !== severityFilter) return false;
-    if (
-      search &&
-      !e.title.toLowerCase().includes(search.toLowerCase()) &&
-      !e.packageName.toLowerCase().includes(search.toLowerCase())
-    )
-      return false;
+    if (search && !e.title.toLowerCase().includes(search.toLowerCase()) && !e.packageName.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
@@ -258,112 +232,84 @@ export default function LiveFeedPage() {
   };
 
   return (
-    <div className="space-y-5">
-      <PageHeader
-        title="Live Feed"
-        description={`${filtered.length} security event${filtered.length !== 1 ? "s" : ""} tracked across all ecosystems.`}
-        action={
-          <div className="flex items-center gap-2.5">
-            {useMock && (
-              <span className="text-[10px] font-medium text-[var(--severity-medium)] bg-[var(--severity-medium-bg)] px-2 py-1 rounded-md">
-                Demo data
-              </span>
-            )}
-            <div className="flex items-center gap-2 rounded-full border border-border/50 bg-card px-3 py-1">
-              <span className="relative flex h-[6px] w-[6px]">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-semibold tracking-tight">Live Feed</h1>
+            <div className="flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1">
+              <span className="relative flex h-1.5 w-1.5">
                 {!paused && (
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--severity-critical)]/40 duration-[2000ms]" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500/40 duration-[2000ms]" />
                 )}
-                <span
-                  className={cn(
-                    "relative inline-flex h-[6px] w-[6px] rounded-full",
-                    paused
-                      ? "bg-muted-foreground"
-                      : "bg-[var(--severity-critical)]"
-                  )}
-                />
+                <span className={cn("relative inline-flex h-1.5 w-1.5 rounded-full", paused ? "bg-muted-foreground" : "bg-red-500")} />
               </span>
-              <span className="text-[11px] font-medium text-muted-foreground">
+              <span className="text-xs font-medium text-muted-foreground">
                 {paused ? "Paused" : "Live"}
               </span>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-[11px] h-7 rounded-lg"
-              onClick={refreshFeed}
-              disabled={loading}
-            >
-              <RefreshCw
-                className={cn("mr-1.5 h-3 w-3", loading && "animate-spin")}
-              />
-              Refresh
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-[11px] h-7 rounded-lg"
-              onClick={() => setPaused(!paused)}
-            >
-              {paused ? (
-                <Play className="mr-1.5 h-3 w-3" />
-              ) : (
-                <Pause className="mr-1.5 h-3 w-3" />
-              )}
-              {paused ? "Resume" : "Pause"}
-            </Button>
+            {useMock && (
+              <span className="text-[10px] font-medium text-[var(--severity-medium)] bg-[var(--severity-medium-bg)] px-2 py-0.5 rounded">
+                Demo
+              </span>
+            )}
           </div>
-        }
-      />
+          <p className="mt-1 text-sm text-muted-foreground">
+            Real-time security intelligence across all monitored ecosystems.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" className="text-sm h-8" onClick={refreshFeed} disabled={loading}>
+            <RefreshCw className={cn("mr-1.5 h-3.5 w-3.5", loading && "animate-spin")} />
+            Refresh
+          </Button>
+          <Button variant="outline" size="sm" className="text-sm h-8" onClick={() => setPaused(!paused)}>
+            {paused ? <Play className="mr-1.5 h-3.5 w-3.5" /> : <Pause className="mr-1.5 h-3.5 w-3.5" />}
+            {paused ? "Resume" : "Pause"}
+          </Button>
+        </div>
+      </div>
 
-      {/* Stats bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl border border-border/50 bg-card p-3.5">
-          <div className="flex items-center gap-2 text-[11px] text-muted-foreground mb-1">
-            <Globe className="h-3 w-3" />
-            Signals Today
-          </div>
-          <div className="flex items-baseline gap-1.5">
-            <motion.span
-              key={totalCount}
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="text-[20px] font-bold tabular-nums tracking-tight"
-            >
-              {totalCount.toLocaleString()}
-            </motion.span>
-            <span className="flex items-center gap-0.5 text-[10px] font-medium text-[var(--severity-critical)]">
-              <TrendingUp className="h-2.5 w-2.5" />
+      {/* Stats strip */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="rounded-xl border border-border p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Globe className="h-3.5 w-3.5" strokeWidth={1.5} />
+              Signals Today
+            </div>
+            <span className="flex items-center gap-0.5 text-[10px] font-medium text-red-500 uppercase tracking-wider">
+              <TrendingUp className="h-3 w-3" />
               live
             </span>
           </div>
+          <motion.span
+            key={totalCount}
+            initial={{ opacity: 0.4, y: -2 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="text-2xl font-semibold tabular-nums tracking-tight leading-none"
+          >
+            {totalCount.toLocaleString()}
+          </motion.span>
         </div>
         {(["critical", "high", "medium"] as Severity[]).map((s) => (
           <div
             key={s}
             className={cn(
-              "rounded-xl border bg-card p-3.5 transition-all duration-200 cursor-pointer",
+              "rounded-xl border p-4 transition-all cursor-pointer",
               severityFilter === s
                 ? `${SEVERITY_CONFIG[s].border} ${SEVERITY_CONFIG[s].bg}`
-                : "border-border/50 hover:border-border"
+                : "border-border hover:bg-muted/30"
             )}
-            onClick={() =>
-              setSeverityFilter(severityFilter === s ? null : s)
-            }
+            onClick={() => setSeverityFilter(severityFilter === s ? null : s)}
           >
-            <div className="flex items-center gap-2 text-[11px] text-muted-foreground mb-1">
-              <span
-                className={cn("h-2 w-2 rounded-full", SEVERITY_CONFIG[s].dot)}
-              />
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3">
+              <span className={cn("h-1.5 w-1.5 rounded-full", SEVERITY_CONFIG[s].dot)} />
               <span className="capitalize">{s}</span>
             </div>
-            <span
-              className={cn(
-                "text-[20px] font-bold tabular-nums tracking-tight",
-                SEVERITY_CONFIG[s].color
-              )}
-            >
+            <span className={cn("text-2xl font-semibold tabular-nums tracking-tight leading-none", SEVERITY_CONFIG[s].color)}>
               {counts[s as keyof typeof counts]}
             </span>
           </div>
@@ -373,288 +319,182 @@ export default function LiveFeedPage() {
       {/* Toolbar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
-          <Search
-            className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground"
-            strokeWidth={1.8}
-          />
+          <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" strokeWidth={1.8} />
           <Input
-            placeholder="Search events..."
+            placeholder="Search signals..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 h-9 text-[13px] rounded-xl"
+            className="pl-9 h-9 text-sm"
           />
         </div>
-        <div className="flex gap-1 rounded-xl border border-border bg-card p-1">
+        <div className="flex gap-0.5 rounded-lg border border-border p-1">
           {[null, ...severities].map((s) => (
             <button
               key={s ?? "all"}
               className={cn(
-                "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] font-medium transition-all capitalize",
+                "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all capitalize",
                 severityFilter === s
-                  ? "bg-foreground text-background shadow-sm"
+                  ? "bg-foreground text-background"
                   : "text-muted-foreground hover:text-foreground"
               )}
               onClick={() => setSeverityFilter(s)}
             >
-              {s && (
-                <span
-                  className={cn(
-                    "h-1.5 w-1.5 rounded-full",
-                    severityFilter === s
-                      ? "bg-background/60"
-                      : SEVERITY_CONFIG[s].dot
-                  )}
-                />
-              )}
+              {s && <span className={cn("h-1.5 w-1.5 rounded-full", severityFilter === s ? "bg-background/60" : SEVERITY_CONFIG[s].dot)} />}
               {s ?? "All"}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Card grid feed */}
+      {/* Feed table */}
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="rounded-2xl border border-border/60 bg-card overflow-hidden animate-pulse"
-            >
-              <div className="h-[72px] bg-secondary/60" />
-              <div className="p-4 space-y-2.5">
-                <div className="h-4 w-3/4 rounded bg-secondary" />
-                <div className="h-3 w-1/2 rounded bg-secondary" />
-                <div className="h-3 w-full rounded bg-secondary" />
-                <div className="h-2 w-2/3 rounded-full bg-secondary" />
+        <div className="rounded-xl border border-border overflow-hidden">
+          <div className="divide-y divide-border">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="flex items-center gap-4 px-5 py-3.5 animate-pulse">
+                <div className="h-3 w-16 rounded bg-muted" />
+                <div className="h-7 w-7 rounded-lg bg-muted" />
+                <div className="flex-1 space-y-1.5">
+                  <div className="h-3.5 w-3/4 rounded bg-muted" />
+                  <div className="h-2.5 w-1/2 rounded bg-muted" />
+                </div>
+                <div className="h-5 w-14 rounded bg-muted" />
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          <AnimatePresence mode="popLayout" initial={false}>
-            {filtered.map((event) => {
-              const Icon = iconMap[event.type] || ShieldAlert;
-              const isNew = event._uid === newestUid;
-              const severity = event.severity;
-              const threat = threatLevel[severity];
+        <div className="rounded-xl border border-border overflow-hidden">
+          {/* Table header */}
+          <div className="flex items-center gap-4 px-5 py-2.5 border-b border-border text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+            <span className="w-[60px]">Time</span>
+            <span className="w-7" />
+            <span className="flex-1">Signal</span>
+            <span className="w-[72px] text-center">Severity</span>
+            <span className="hidden sm:block w-[64px]">Source</span>
+            <span className="w-5" />
+          </div>
 
-              return (
-                <motion.div
-                  key={event._uid}
-                  layout
-                  initial={{ opacity: 0, scale: 0.85, y: 30 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{
-                    duration: 0.55,
-                    ease: [0.16, 1, 0.3, 1],
-                    layout: { duration: 0.4 },
-                  }}
-                  className={cn(
-                    "group relative rounded-2xl border bg-card overflow-hidden transition-all duration-500 cursor-default",
-                    isNew
-                      ? "feed-card-new ring-1"
-                      : "border-border/50 shadow-[0_1px_3px_oklch(0_0_0/0.04)] hover:shadow-[0_4px_20px_oklch(0_0_0/0.08)] hover:-translate-y-1"
-                  )}
-                  style={
-                    isNew
-                      ? ({
-                          borderColor: `var(--severity-${severity})`,
-                          "--ring-color": `var(--severity-${severity}-ring)`,
-                        } as React.CSSProperties)
-                      : undefined
-                  }
-                >
-                  {/* Colored header panel — like pump.fun image area */}
-                  <div
-                    className="relative flex items-center gap-3.5 px-4 py-3.5"
-                    style={{
-                      background: `linear-gradient(135deg, var(--severity-${severity}-bg) 0%, var(--severity-${severity}-bg) 60%, transparent 100%)`,
-                    }}
-                  >
-                    {/* Icon */}
-                    <div
-                      className={cn(
-                        "relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-all duration-500",
-                        SEVERITY_CONFIG[severity].border,
-                        "bg-card/80 backdrop-blur-sm"
-                      )}
-                    >
-                      <Icon
-                        className={cn(
-                          "h-5 w-5 transition-transform duration-500",
-                          SEVERITY_CONFIG[severity].color,
-                          isNew && "scale-110"
-                        )}
-                        strokeWidth={1.8}
-                      />
-                      {/* Pulse ring */}
-                      {isNew && (
-                        <motion.div
-                          className="absolute inset-0 rounded-xl border-2"
-                          style={{
-                            borderColor: `var(--severity-${severity})`,
-                          }}
-                          initial={{ opacity: 0.6, scale: 1 }}
-                          animate={{ opacity: 0, scale: 1.6 }}
-                          transition={{ duration: 1.2, ease: "easeOut" }}
-                        />
-                      )}
-                    </div>
+          {!paused && (
+            <div className="relative h-px overflow-hidden">
+              <div className="feed-scan-line absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
+            </div>
+          )}
 
-                    {/* Title + type */}
-                    <div className="min-w-0 flex-1">
-                      <h3 className="text-[13px] font-bold leading-snug tracking-tight line-clamp-2">
-                        {event.title}
-                      </h3>
-                      <span className="text-[11px] font-medium text-muted-foreground capitalize">
-                        {event.type.replace(/_/g, " ").toLowerCase()}
-                      </span>
-                    </div>
+          <div className="divide-y divide-border">
+            <AnimatePresence initial={false}>
+              {filtered.map((event) => {
+                const Icon = iconMap[event.type] || ShieldAlert;
+                const isNew = event._uid === newestUid;
+                const severity = event.severity;
 
-                    {/* NEW flash badge */}
-                    {isNew && (
-                      <motion.div
-                        className="absolute top-2.5 right-3"
-                        initial={{ opacity: 0, scale: 0.5, rotate: -12 }}
-                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 400,
-                          damping: 15,
-                        }}
-                      >
-                        <span className="flex items-center gap-0.5 rounded-full bg-[var(--severity-critical)] px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white shadow-lg">
-                          <Zap className="h-2.5 w-2.5" />
-                          New
-                        </span>
-                      </motion.div>
+                return (
+                  <motion.div
+                    key={event._uid}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+                    className={cn(
+                      "group flex items-center gap-4 px-5 py-3 cursor-default transition-colors",
+                      isNew ? "feed-item-flash" : "hover:bg-muted/30"
                     )}
-                  </div>
+                    style={isNew ? { "--feed-flash-color": `var(--severity-${severity}-bg)` } as React.CSSProperties : undefined}
+                  >
+                    <span className="w-[60px] shrink-0 text-xs font-mono tabular-nums text-muted-foreground">
+                      {formatTime(event.timestamp)}
+                    </span>
 
-                  {/* Card body */}
-                  <div className="px-4 pb-4 pt-3 space-y-3">
-                    {/* Meta row: package + ecosystem + time */}
-                    <div className="flex items-center gap-2 text-[11px]">
-                      <span
-                        className={cn(
-                          "h-1.5 w-1.5 rounded-full",
-                          SEVERITY_CONFIG[severity].dot
-                        )}
-                      />
-                      <code className="font-mono font-semibold text-foreground/80 truncate">
-                        {event.packageName}
-                      </code>
-                      <span className="text-muted-foreground/50">&middot;</span>
-                      <span className="text-muted-foreground font-medium">
-                        {event.ecosystem}
-                      </span>
-                      <span className="ml-auto text-[10px] font-mono tabular-nums text-muted-foreground/50">
-                        {formatTimeAgo(event.timestamp)}
-                      </span>
+                    <div className={cn(
+                      "flex h-7 w-7 shrink-0 items-center justify-center rounded-lg",
+                      isNew ? `${SEVERITY_CONFIG[severity].bg} ring-1 ${SEVERITY_CONFIG[severity].border}` : "bg-muted"
+                    )}>
+                      <Icon className={cn("h-3.5 w-3.5", isNew ? SEVERITY_CONFIG[severity].color : "text-muted-foreground")} strokeWidth={1.6} />
                     </div>
 
-                    {/* Threat level bar — like pump.fun market cap bar */}
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between text-[10px]">
-                        <span className="font-semibold text-muted-foreground uppercase tracking-wide">
-                          Threat Level
-                        </span>
-                        <span
-                          className={cn(
-                            "font-bold uppercase tracking-wide",
-                            SEVERITY_CONFIG[severity].color
-                          )}
-                        >
-                          {threat.label}
-                        </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium truncate">{event.title}</span>
+                        {isNew && (
+                          <motion.span
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="shrink-0 flex items-center gap-0.5 rounded bg-red-500 px-1.5 py-0.5 text-[8px] font-semibold uppercase tracking-wider text-white"
+                          >
+                            <Zap className="h-2 w-2" />
+                            New
+                          </motion.span>
+                        )}
                       </div>
-                      <div className="h-1.5 w-full rounded-full bg-muted/60 overflow-hidden">
-                        <motion.div
-                          className="h-full rounded-full"
-                          style={{
-                            backgroundColor: `var(--severity-${severity})`,
-                          }}
-                          initial={isNew ? { width: 0 } : undefined}
-                          animate={{ width: `${threat.pct}%` }}
-                          transition={{
-                            duration: isNew ? 0.8 : 0.3,
-                            ease: [0.16, 1, 0.3, 1],
-                            delay: isNew ? 0.2 : 0,
-                          }}
-                        />
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <code className="text-xs font-mono text-muted-foreground">{event.packageName}</code>
+                        <span className="text-muted-foreground/40">/</span>
+                        <span className="text-[10px] text-muted-foreground">{event.ecosystem}</span>
                       </div>
                     </div>
 
-                    {/* Severity badge */}
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={cn(
-                          "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.04em] ring-1 ring-inset",
-                          SEVERITY_CONFIG[severity].badge
-                        )}
-                      >
-                        {severity === "critical" && (
-                          <Zap className="h-2.5 w-2.5" />
-                        )}
+                    <div className="w-[72px] flex justify-center shrink-0">
+                      <span className={cn(
+                        "inline-flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
+                        SEVERITY_CONFIG[severity].badge
+                      )}>
                         {SEVERITY_CONFIG[severity].label}
                       </span>
-                      {event.sourceName && (
-                        <span className="text-[10px] text-muted-foreground/50 bg-muted/50 rounded px-1.5 py-0.5">
-                          {event.sourceName}
-                        </span>
-                      )}
-                      {event.sourceUrl && (
+                    </div>
+
+                    <span className="hidden sm:block w-[64px] text-[10px] text-muted-foreground truncate">
+                      {event.sourceName || event.ecosystem}
+                    </span>
+
+                    <div className="w-5 shrink-0">
+                      {event.sourceUrl ? (
                         <a
                           href={event.sourceUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="ml-auto flex items-center gap-0.5 text-[10px] font-medium text-muted-foreground/50 hover:text-foreground transition-colors"
+                          className="flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                         >
-                          <ExternalLink className="h-2.5 w-2.5" />
+                          <ArrowUpRight className="h-3 w-3" />
                         </a>
+                      ) : (
+                        <div className="h-5 w-5" />
                       )}
                     </div>
-
-                    {/* Description */}
-                    <p className="text-[11px] text-muted-foreground/70 leading-relaxed line-clamp-2">
-                      {event.description}
-                    </p>
-                  </div>
-
-                  {/* Ambient card glow for new items */}
-                  {isNew && (
-                    <motion.div
-                      className="absolute inset-0 pointer-events-none rounded-2xl"
-                      style={{
-                        boxShadow: `0 0 30px var(--severity-${severity}-bg), 0 0 60px var(--severity-${severity}-bg)`,
-                      }}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.6 }}
-                    />
-                  )}
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
 
           {filtered.length === 0 && (
-            <div className="col-span-full rounded-2xl border border-border/80 bg-card shadow-sm py-20 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary mx-auto mb-4">
-                <Radio
-                  className="h-5 w-5 text-muted-foreground"
-                  strokeWidth={1.5}
-                />
-              </div>
-              <p className="text-[14px] font-semibold">No events found</p>
-              <p className="mt-1 text-[13px] text-muted-foreground">
-                Try adjusting your filters.
-              </p>
+            <div className="py-16 text-center">
+              <Radio className="h-5 w-5 text-muted-foreground mx-auto mb-3" strokeWidth={1.5} />
+              <p className="text-sm font-medium">No signals found</p>
+              <p className="mt-1 text-xs text-muted-foreground">Try adjusting your filters.</p>
             </div>
           )}
+
+          <div className="flex items-center justify-between px-5 py-2.5 border-t border-border">
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] font-mono text-muted-foreground tabular-nums">
+                {filtered.length} signal{filtered.length !== 1 ? "s" : ""}
+              </span>
+              <span className="h-3 w-px bg-border" />
+              <span className="text-[10px] font-mono text-muted-foreground tabular-nums flex items-center gap-1">
+                <Clock className="h-3 w-3" />
+                {currentTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false })}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="relative flex h-1.5 w-1.5">
+                {!paused && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500/40 duration-[3000ms]" />}
+                <span className={cn("relative inline-flex h-1.5 w-1.5 rounded-full", paused ? "bg-muted-foreground" : "bg-emerald-500")} />
+              </span>
+              <span className="text-[10px] text-muted-foreground">
+                {paused ? "Feed paused" : "Monitoring active"}
+              </span>
+            </div>
+          </div>
         </div>
       )}
     </div>

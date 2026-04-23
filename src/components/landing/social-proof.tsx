@@ -17,12 +17,12 @@ const logos = [
 
 export function SocialProof() {
   return (
-    <section className="relative border-t border-border/40">
+    <section className="relative border-t border-border">
       {/* Trust logos */}
-      <div className="border-b border-border/30">
-        <div className="mx-auto max-w-[1080px] px-5 sm:px-6 py-8 sm:py-10">
+      <div className="border-b border-border">
+        <div className="mx-auto max-w-[1200px] px-6 py-10">
           <motion.p
-            className="mb-6 sm:mb-8 text-center text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/30"
+            className="mb-8 text-center text-[10px] font-medium uppercase tracking-widest text-muted-foreground"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -30,7 +30,7 @@ export function SocialProof() {
             Trusted by engineering teams at
           </motion.p>
           <motion.div
-            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:gap-x-10 sm:gap-y-4"
+            className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -39,7 +39,7 @@ export function SocialProof() {
             {logos.map((name) => (
               <span
                 key={name}
-                className="text-[13px] sm:text-[14px] font-semibold tracking-[-0.02em] text-foreground/[0.12] select-none"
+                className="text-sm font-semibold tracking-tight text-foreground/15 select-none"
               >
                 {name}
               </span>
@@ -49,8 +49,8 @@ export function SocialProof() {
       </div>
 
       {/* Stats */}
-      <div className="mx-auto max-w-[1080px] px-5 sm:px-6 py-12 sm:py-16 md:py-20">
-        <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-4 md:gap-0 md:divide-x md:divide-border/30">
+      <div className="mx-auto max-w-[1200px] px-6 py-16 md:py-20">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-0 md:divide-x md:divide-border">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -60,9 +60,9 @@ export function SocialProof() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ delay: i * 0.06, duration: 0.5, ease }}
             >
-              <p className="text-[28px] sm:text-[32px] md:text-[36px] font-bold tracking-[-0.04em] tabular-nums">{stat.value}</p>
-              <p className="mt-1 sm:mt-1.5 text-[12px] sm:text-[13px] font-semibold text-foreground/70">{stat.label}</p>
-              <p className="mt-0.5 text-[10px] sm:text-[11px] text-muted-foreground/40 hidden sm:block">{stat.sub}</p>
+              <p className="text-4xl font-bold tracking-tight tabular-nums">{stat.value}</p>
+              <p className="mt-1.5 text-sm font-medium">{stat.label}</p>
+              <p className="mt-0.5 text-xs text-muted-foreground hidden sm:block">{stat.sub}</p>
             </motion.div>
           ))}
         </div>

@@ -92,6 +92,28 @@ export interface DashboardStats {
   integrationsConnected: number;
 }
 
+export interface GitHubRepo {
+  id: string;
+  owner: string;
+  name: string;
+  fullName: string;
+  defaultBranch: string;
+  language: string | null;
+  private: boolean;
+  vulnerabilities: number;
+  lastScanAt: Date | null;
+}
+
+export interface Project {
+  id: string;
+  name: string;
+  slug: string;
+  color: string;
+  packagesCount: number;
+  alertsCount: number;
+  criticalCount: number;
+}
+
 export interface PricingPlan {
   name: string;
   tier: PlanTier;

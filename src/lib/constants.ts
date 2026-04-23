@@ -1,4 +1,4 @@
-import { type PricingPlan, type FeedEvent, type TrackedPackage, type AlertItem, type DashboardStats } from "@/types";
+import { type PricingPlan, type FeedEvent, type TrackedPackage, type AlertItem, type DashboardStats, type GitHubRepo, type Project } from "@/types";
 
 export const PRICING_PLANS: PricingPlan[] = [
   {
@@ -45,6 +45,30 @@ export const PRICING_PLANS: PricingPlan[] = [
     ],
   },
 ];
+
+export const MOCK_PROJECTS: Project[] = [
+  { id: "all", name: "All Projects", slug: "all", color: "#6366f1", packagesCount: 147, alertsCount: 12, criticalCount: 3 },
+  { id: "proj-1", name: "Web App", slug: "web-app", color: "#3b82f6", packagesCount: 64, alertsCount: 5, criticalCount: 1 },
+  { id: "proj-2", name: "API Server", slug: "api-server", color: "#10b981", packagesCount: 38, alertsCount: 3, criticalCount: 1 },
+  { id: "proj-3", name: "Mobile App", slug: "mobile-app", color: "#f59e0b", packagesCount: 29, alertsCount: 4, criticalCount: 1 },
+  { id: "proj-4", name: "Design System", slug: "design-system", color: "#8b5cf6", packagesCount: 16, alertsCount: 0, criticalCount: 0 },
+];
+
+export const MOCK_PROJECT_STATS: Record<string, DashboardStats> = {
+  "all": { totalPackages: 147, activeAlerts: 12, criticalIssues: 3, integrationsConnected: 4 },
+  "proj-1": { totalPackages: 64, activeAlerts: 5, criticalIssues: 1, integrationsConnected: 3 },
+  "proj-2": { totalPackages: 38, activeAlerts: 3, criticalIssues: 1, integrationsConnected: 2 },
+  "proj-3": { totalPackages: 29, activeAlerts: 4, criticalIssues: 1, integrationsConnected: 2 },
+  "proj-4": { totalPackages: 16, activeAlerts: 0, criticalIssues: 0, integrationsConnected: 1 },
+};
+
+export const MOCK_PROJECT_SEVERITY: Record<string, { critical: number; high: number; medium: number; low: number }> = {
+  "all": { critical: 3, high: 5, medium: 8, low: 2 },
+  "proj-1": { critical: 1, high: 2, medium: 3, low: 1 },
+  "proj-2": { critical: 1, high: 1, medium: 2, low: 0 },
+  "proj-3": { critical: 1, high: 2, medium: 2, low: 1 },
+  "proj-4": { critical: 0, high: 0, medium: 1, low: 0 },
+};
 
 export const MOCK_STATS: DashboardStats = {
   totalPackages: 147,
@@ -288,6 +312,14 @@ export const MOCK_ALERTS: AlertItem[] = [
     affectedVersions: "< 6.35.2",
     patchedVersions: "6.35.2",
   },
+];
+
+export const MOCK_GITHUB_REPOS: GitHubRepo[] = [
+  { id: "1", owner: "acme-corp", name: "web-app", fullName: "acme-corp/web-app", defaultBranch: "main", language: "TypeScript", private: true, vulnerabilities: 4, lastScanAt: new Date(Date.now() - 1000 * 60 * 30) },
+  { id: "2", owner: "acme-corp", name: "api-server", fullName: "acme-corp/api-server", defaultBranch: "main", language: "Go", private: true, vulnerabilities: 1, lastScanAt: new Date(Date.now() - 1000 * 60 * 60) },
+  { id: "3", owner: "acme-corp", name: "design-system", fullName: "acme-corp/design-system", defaultBranch: "main", language: "TypeScript", private: false, vulnerabilities: 0, lastScanAt: new Date(Date.now() - 1000 * 60 * 120) },
+  { id: "4", owner: "acme-corp", name: "mobile-app", fullName: "acme-corp/mobile-app", defaultBranch: "develop", language: "Dart", private: true, vulnerabilities: 7, lastScanAt: new Date(Date.now() - 1000 * 60 * 15) },
+  { id: "5", owner: "acme-corp", name: "infra", fullName: "acme-corp/infra", defaultBranch: "main", language: "HCL", private: true, vulnerabilities: 0, lastScanAt: new Date(Date.now() - 1000 * 60 * 180) },
 ];
 
 export const SEVERITY_CONFIG = {

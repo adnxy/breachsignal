@@ -58,19 +58,19 @@ const plans = [
 
 export function Pricing() {
   return (
-    <section id="pricing" className="relative py-16 sm:py-28 md:py-36 border-t border-border/30">
-      <div className="mx-auto max-w-[1000px] px-5 sm:px-6">
+    <section id="pricing" className="relative py-20 sm:py-28 md:py-36 border-t border-border">
+      <div className="mx-auto max-w-[1000px] px-6">
         <motion.div
-          className="mx-auto max-w-md text-center mb-10 sm:mb-16"
+          className="mx-auto max-w-md text-center mb-16"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5, ease }}
         >
-          <p className="mb-3 sm:mb-4 text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/40">
+          <p className="mb-4 text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
             Pricing
           </p>
-          <h2 className="font-serif text-[1.5rem] sm:text-[2rem] font-[400] tracking-[-0.02em] text-foreground md:text-[2.5rem]">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             Start free, scale when ready
           </h2>
         </motion.div>
@@ -80,10 +80,10 @@ export function Pricing() {
             <motion.div
               key={plan.name}
               className={cn(
-                "relative flex flex-col rounded-2xl sm:rounded-3xl transition-all duration-300",
+                "relative flex flex-col rounded-xl transition-all",
                 plan.highlighted
-                  ? "bg-foreground text-background p-7 sm:p-9 md:p-10 md:-my-3 shadow-[0_4px_24px_oklch(0_0_0/0.12),0_12px_48px_oklch(0_0_0/0.06)]"
-                  : "border border-border/40 bg-card p-6 sm:p-8 md:p-9 hover:border-border/60"
+                  ? "bg-foreground text-background p-8 md:p-10 md:-my-4 shadow-2xl"
+                  : "border border-border p-8 md:p-9"
               )}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -91,29 +91,29 @@ export function Pricing() {
               transition={{ delay: i * 0.08, duration: 0.5, ease }}
             >
               {plan.highlighted && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[var(--brand)] px-3.5 py-1 text-[9px] font-bold text-white uppercase tracking-[0.08em] whitespace-nowrap shadow-sm">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-emerald-500 px-3.5 py-1 text-[10px] font-semibold text-white uppercase tracking-wider whitespace-nowrap">
                   Most popular
                 </span>
               )}
 
               <div>
-                <h3 className="text-[14px] sm:text-[15px] font-semibold tracking-[-0.01em]">{plan.name}</h3>
+                <h3 className="text-sm font-semibold">{plan.name}</h3>
                 <p className={cn(
-                  "mt-1 sm:mt-1.5 text-[11px] sm:text-[12px] leading-relaxed",
-                  plan.highlighted ? "text-background/35" : "text-muted-foreground/40"
+                  "mt-1.5 text-xs",
+                  plan.highlighted ? "text-background/50" : "text-muted-foreground"
                 )}>
                   {plan.description}
                 </p>
               </div>
 
-              <div className="mt-5 sm:mt-8 flex items-baseline gap-1">
-                <span className="text-[36px] sm:text-[48px] font-bold tracking-[-0.05em] leading-none tabular-nums">
+              <div className="mt-8 flex items-baseline gap-1">
+                <span className="text-5xl font-bold tracking-tight tabular-nums">
                   {plan.price}
                 </span>
                 {plan.period && (
                   <span className={cn(
-                    "text-[13px] sm:text-[14px] font-medium",
-                    plan.highlighted ? "text-background/20" : "text-muted-foreground/25"
+                    "text-sm",
+                    plan.highlighted ? "text-background/30" : "text-muted-foreground"
                   )}>
                     {plan.period}
                   </span>
@@ -123,10 +123,10 @@ export function Pricing() {
               <Link
                 href="/auth/signup"
                 className={cn(
-                  "mt-5 sm:mt-8 flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl py-2.5 sm:py-3 text-[13px] font-semibold transition-all duration-200",
+                  "mt-8 flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all",
                   plan.highlighted
-                    ? "bg-background text-foreground hover:opacity-90 active:scale-[0.98]"
-                    : "border border-border/40 text-foreground/60 hover:border-border hover:text-foreground active:scale-[0.98]"
+                    ? "bg-background text-foreground hover:opacity-90"
+                    : "border border-border text-foreground hover:bg-muted"
                 )}
               >
                 {plan.cta}
@@ -134,30 +134,23 @@ export function Pricing() {
               </Link>
 
               <div className={cn(
-                "my-5 sm:my-8 h-px",
-                plan.highlighted ? "bg-background/[0.08]" : "bg-border/25"
+                "my-8 h-px",
+                plan.highlighted ? "bg-background/10" : "bg-border"
               )} />
 
-              <ul className="flex-1 space-y-2.5 sm:space-y-3.5">
+              <ul className="flex-1 space-y-3">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2.5 sm:gap-3">
-                    <div className={cn(
-                      "flex h-4 w-4 sm:h-[18px] sm:w-[18px] items-center justify-center rounded-full shrink-0",
-                      plan.highlighted
-                        ? "bg-[var(--brand-light)]/15"
-                        : "bg-[var(--brand)]/[0.06]"
-                    )}>
-                      <Check
-                        className={cn(
-                          "h-2 w-2 sm:h-2.5 sm:w-2.5",
-                          plan.highlighted ? "text-[var(--brand-light)]" : "text-[var(--brand)]/60"
-                        )}
-                        strokeWidth={3}
-                      />
-                    </div>
+                  <li key={feature} className="flex items-center gap-3">
+                    <Check
+                      className={cn(
+                        "h-4 w-4 shrink-0",
+                        plan.highlighted ? "text-emerald-400" : "text-muted-foreground"
+                      )}
+                      strokeWidth={2}
+                    />
                     <span className={cn(
-                      "text-[12px] sm:text-[13px]",
-                      plan.highlighted ? "text-background/60" : "text-foreground/50"
+                      "text-sm",
+                      plan.highlighted ? "text-background/70" : "text-muted-foreground"
                     )}>
                       {feature}
                     </span>
@@ -168,7 +161,7 @@ export function Pricing() {
           ))}
         </div>
 
-        <p className="mt-8 sm:mt-10 text-center text-[10px] sm:text-[11px] text-muted-foreground/25">
+        <p className="mt-10 text-center text-xs text-muted-foreground">
           No credit card required. Cancel anytime.
         </p>
       </div>

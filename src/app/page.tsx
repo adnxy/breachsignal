@@ -1,6 +1,8 @@
 import { Navbar } from "@/components/landing/navbar";
 import { Hero } from "@/components/landing/hero";
+import { SocialProof } from "@/components/landing/social-proof";
 import { Features } from "@/components/landing/features";
+import { Sources } from "@/components/landing/sources";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { Pricing } from "@/components/landing/pricing";
 import { Footer } from "@/components/landing/footer";
@@ -18,7 +20,9 @@ export default function LandingPage() {
       <Navbar />
       <main>
         <Hero />
+        <SocialProof />
         <Features />
+        <Sources />
         <HowItWorks />
         <Pricing />
       </main>
