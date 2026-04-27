@@ -47,15 +47,16 @@ export async function POST(req: Request) {
     const newPackages = packageNames.filter((name) => !existingNames.has(name));
 
     if (newPackages.length > 0) {
-      await db.packageSubscription.createMany({
-        data: newPackages.map((name) => ({
-          userId: session.user.id,
-          packageName: name,
-          version: String(allDeps[name] ?? "").replace(/[\^~>=<]*/g, "") || undefined,
-          ecosystem: "npm",
-        })),
-        skipDuplicates: true,
-      });
+      for (const name of newPackages) {
+        await db.packageSubscription.create({
+          data: {
+            userId: session.user.id,
+            packageName: name,
+            version: String(allDeps[name] ?? "").replace(/[\^~>=<]*/g, "") || undefined,
+            ecosystem: "npm",
+          },
+        });
+      }
     }
 
     return NextResponse.json({

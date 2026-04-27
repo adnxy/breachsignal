@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "@/components/shared/logo";
 import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard, Radio, Package, Bell, Plug, Settings, LogOut, GitBranch,
+  LayoutDashboard, Radio, Package, Bell, Plug, Settings, LogOut, GitBranch, ChevronRight,
 } from "lucide-react";
 
 const primaryNav = [
@@ -25,12 +25,13 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 flex w-[220px] flex-col border-r border-border bg-background">
+    <aside className="fixed inset-y-0 left-0 z-30 flex w-[260px] flex-col border-r border-border bg-background">
       {/* Header */}
-      <div className="flex h-16 items-center px-5 border-b border-border">
+      <div className="flex h-14 items-center justify-between px-5 border-b border-border">
         <Link href="/dashboard">
           <Logo />
         </Link>
+        <ChevronRight className="h-4 w-4 text-muted-foreground/40" />
       </div>
 
       {/* Navigation */}
@@ -43,7 +44,7 @@ export function Sidebar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors",
+                  "group flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] transition-colors",
                   isActive
                     ? "bg-muted text-foreground font-medium"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -67,7 +68,7 @@ export function Sidebar() {
           })}
         </div>
 
-        <div className="my-4 h-px bg-border mx-3" />
+        <div className="my-3 h-px bg-border mx-3" />
 
         <div className="space-y-0.5">
           {secondaryNav.map((item) => {
@@ -77,7 +78,7 @@ export function Sidebar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors",
+                  "group flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] transition-colors",
                   isActive
                     ? "bg-muted text-foreground font-medium"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -93,13 +94,13 @@ export function Sidebar() {
 
       {/* User section */}
       <div className="border-t border-border px-3 py-3">
-        <div className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-muted transition-colors cursor-pointer group">
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-xs font-medium">
+        <div className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-muted transition-colors cursor-pointer group">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-[11px] font-medium ring-1 ring-border">
             JS
           </div>
           <div className="flex-1 min-w-0">
-            <p className="truncate text-sm font-medium">Jane Smith</p>
-            <p className="truncate text-xs text-muted-foreground">Individual Plan</p>
+            <p className="truncate text-[13px] font-medium">Jane Smith</p>
+            <p className="truncate text-[11px] text-muted-foreground">Pro Plan</p>
           </div>
           <LogOut className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" strokeWidth={1.5} />
         </div>

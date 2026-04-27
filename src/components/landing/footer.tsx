@@ -26,7 +26,7 @@ export function Footer() {
     <footer className="border-t border-border">
       {/* CTA band */}
       <div className="border-b border-border">
-        <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-5 px-6 py-12 text-center sm:text-left sm:flex-row sm:justify-between">
+        <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-5 px-4 sm:px-6 py-10 sm:py-12 text-center sm:text-left sm:flex-row sm:justify-between">
           <div>
             <h3 className="text-lg font-semibold tracking-tight">
               Start monitoring your supply chain
@@ -37,16 +37,16 @@ export function Footer() {
           </div>
           <Link
             href="/auth/signup"
-            className="inline-flex items-center gap-2 rounded-lg bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-90 shrink-0 w-full sm:w-auto justify-center"
+            className="group inline-flex items-center gap-2 rounded-lg bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-90 shrink-0 w-full sm:w-auto justify-center"
           >
             Get Started Free
-            <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+            <ArrowRight className="h-3.5 w-3.5 opacity-40 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
       </div>
 
       {/* Footer grid */}
-      <div className="mx-auto max-w-[1200px] px-6 py-12">
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 py-10 sm:py-12">
         <div className="grid gap-8 grid-cols-2 md:grid-cols-5">
           <div className="col-span-2">
             <Logo />
@@ -85,7 +85,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-border">
-        <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-1 sm:flex-row sm:justify-between px-6 py-5">
+        <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-1 sm:flex-row sm:justify-between px-4 sm:px-6 py-5">
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} BreachSignal
           </p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, Search, Menu, Command, ChevronRight } from "lucide-react";
+import { Bell, Menu, ChevronRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
@@ -63,15 +63,6 @@ export function TopBar({ onMenuClick }: { onMenuClick?: () => void }) {
         </div>
 
         <div className="flex-1" />
-
-        {/* Search */}
-        <button className="group flex h-8 items-center gap-2 rounded-lg border border-border px-3 transition-colors hover:bg-muted w-full max-w-[240px]">
-          <Search className="h-3.5 w-3.5 text-muted-foreground shrink-0" strokeWidth={1.7} />
-          <span className="text-sm text-muted-foreground flex-1 text-left hidden sm:block">Search...</span>
-          <kbd className="hidden sm:inline-flex h-5 items-center gap-0.5 rounded border border-border bg-muted px-1.5 text-[10px] font-mono text-muted-foreground">
-            <Command className="h-2.5 w-2.5" />K
-          </kbd>
-        </button>
 
         <ThemeToggle />
 

@@ -232,12 +232,12 @@ export default function LiveFeedPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
         <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-semibold tracking-tight">Live Feed</h1>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-lg sm:text-2xl font-semibold tracking-tight">Live Feed</h1>
             <div className="flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1">
               <span className="relative flex h-1.5 w-1.5">
                 {!paused && (
@@ -272,8 +272,8 @@ export default function LiveFeedPage() {
       </div>
 
       {/* Stats strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-border p-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="rounded-xl border border-border p-3 sm:p-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <Globe className="h-3.5 w-3.5" strokeWidth={1.5} />
@@ -289,7 +289,7 @@ export default function LiveFeedPage() {
             initial={{ opacity: 0.4, y: -2 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="text-2xl font-semibold tabular-nums tracking-tight leading-none"
+            className="text-xl sm:text-2xl font-semibold tabular-nums tracking-tight leading-none"
           >
             {totalCount.toLocaleString()}
           </motion.span>
@@ -298,7 +298,7 @@ export default function LiveFeedPage() {
           <div
             key={s}
             className={cn(
-              "rounded-xl border p-4 transition-all cursor-pointer",
+              "rounded-xl border p-3 sm:p-4 transition-all cursor-pointer",
               severityFilter === s
                 ? `${SEVERITY_CONFIG[s].border} ${SEVERITY_CONFIG[s].bg}`
                 : "border-border hover:bg-muted/30"
@@ -327,7 +327,7 @@ export default function LiveFeedPage() {
             className="pl-9 h-9 text-sm"
           />
         </div>
-        <div className="flex gap-0.5 rounded-lg border border-border p-1">
+        <div className="flex gap-0.5 rounded-lg border border-border p-1 overflow-x-auto">
           {[null, ...severities].map((s) => (
             <button
               key={s ?? "all"}
@@ -366,7 +366,7 @@ export default function LiveFeedPage() {
       ) : (
         <div className="rounded-xl border border-border overflow-hidden">
           {/* Table header */}
-          <div className="flex items-center gap-4 px-5 py-2.5 border-b border-border text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+          <div className="hidden sm:flex items-center gap-4 px-5 py-2.5 border-b border-border text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
             <span className="w-[60px]">Time</span>
             <span className="w-7" />
             <span className="flex-1">Signal</span>
@@ -396,12 +396,12 @@ export default function LiveFeedPage() {
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
                     className={cn(
-                      "group flex items-center gap-4 px-5 py-3 cursor-default transition-colors",
+                      "group flex items-center gap-3 sm:gap-4 px-3 sm:px-5 py-2.5 sm:py-3 cursor-default transition-colors",
                       isNew ? "feed-item-flash" : "hover:bg-muted/30"
                     )}
                     style={isNew ? { "--feed-flash-color": `var(--severity-${severity}-bg)` } as React.CSSProperties : undefined}
                   >
-                    <span className="w-[60px] shrink-0 text-xs font-mono tabular-nums text-muted-foreground">
+                    <span className="hidden sm:block w-[60px] shrink-0 text-xs font-mono tabular-nums text-muted-foreground">
                       {formatTime(event.timestamp)}
                     </span>
 

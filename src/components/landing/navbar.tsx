@@ -45,11 +45,11 @@ export function Navbar() {
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-200",
         scrolled
-          ? "border-b border-border bg-background/80 backdrop-blur-xl"
+          ? "border-b border-border bg-background/85 backdrop-blur-xl backdrop-saturate-150"
           : "bg-transparent"
       )}
     >
-      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-6">
+      <div className="mx-auto flex h-14 sm:h-16 max-w-[1200px] items-center justify-between px-4 sm:px-6">
         <Link href="/" className="relative z-10">
           <Logo />
         </Link>

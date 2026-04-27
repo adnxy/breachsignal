@@ -89,11 +89,11 @@ export function LiveFeedPreview() {
 
   return (
     <div className="relative mx-auto max-w-[960px]">
-      <div className="overflow-hidden rounded-xl border border-border bg-card">
+      <div className="overflow-hidden rounded-xl border border-border bg-card feed-card">
 
         {/* Header */}
         <div className="border-b border-border">
-          <div className="flex items-center justify-between px-5 py-3 sm:px-6">
+          <div className="flex items-center justify-between px-4 py-3 sm:px-6">
             <div className="flex items-center gap-3">
               <h3 className="text-sm font-semibold">Breach Feed</h3>
               <div className="flex items-center gap-1.5">
@@ -145,7 +145,7 @@ export function LiveFeedPreview() {
         </div>
 
         {/* Column headers */}
-        <div className="hidden sm:flex items-center border-b border-border px-5 py-2 sm:px-6 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+        <div className="hidden sm:flex items-center border-b border-border px-4 py-2 sm:px-6 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
           <span className="w-9 shrink-0 mr-3.5" />
           <span className="flex-1">Threat</span>
           <span className="w-[80px] text-center hidden md:block">Ecosystem</span>
@@ -157,7 +157,7 @@ export function LiveFeedPreview() {
         <div className="relative">
           <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 h-24 bg-gradient-to-t from-card to-transparent" />
 
-          <div className="max-h-[520px] overflow-hidden">
+          <div className="max-h-[340px] sm:max-h-[520px] overflow-hidden">
             <AnimatePresence initial={false}>
               {items.slice(0, 10).map((event) => {
                 const Icon = iconMap[event.type];
@@ -179,8 +179,8 @@ export function LiveFeedPreview() {
                   >
                     <div
                       className={cn(
-                        "group relative flex items-start sm:items-center gap-3 sm:gap-3.5 border-b border-border px-5 sm:px-6 transition-colors",
-                        isNew ? "feed-item-flash py-3" : "py-2.5 sm:py-3 hover:bg-muted/30"
+                        "group relative flex items-start sm:items-center gap-2.5 sm:gap-3.5 border-b border-border px-3.5 sm:px-6 transition-colors",
+                        isNew ? "feed-item-flash py-2.5 sm:py-3" : "py-2 sm:py-3 hover:bg-muted/30"
                       )}
                       style={isNew ? { "--feed-flash-color": `var(--severity-${severity}-bg)` } as React.CSSProperties : undefined}
                     >
@@ -193,7 +193,7 @@ export function LiveFeedPreview() {
 
                       <div
                         className={cn(
-                          "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border",
+                          "flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg border",
                           SEVERITY_CONFIG[severity].bg,
                           SEVERITY_CONFIG[severity].border,
                         )}
@@ -206,7 +206,7 @@ export function LiveFeedPreview() {
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="truncate text-sm font-medium leading-tight">
+                          <span className="truncate text-xs sm:text-sm font-medium leading-tight">
                             {event.title}
                           </span>
                           <span
@@ -229,8 +229,8 @@ export function LiveFeedPreview() {
                             </motion.span>
                           )}
                         </div>
-                        <div className="mt-1 flex items-center gap-1.5 text-xs">
-                          <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] font-medium">
+                        <div className="mt-0.5 sm:mt-1 flex items-center gap-1.5 text-xs">
+                          <code className="rounded bg-muted px-1 sm:px-1.5 py-0.5 font-mono text-[10px] font-medium">
                             {event.packageName}
                           </code>
                           <span className="sm:hidden text-[10px] text-muted-foreground">{event.ecosystem}</span>
@@ -262,7 +262,7 @@ export function LiveFeedPreview() {
 
         {/* Footer */}
         <div className="border-t border-border">
-          <div className="flex items-center justify-between px-5 py-2.5 sm:px-6 sm:py-3">
+          <div className="flex items-center justify-between px-4 py-2.5 sm:px-6 sm:py-3">
             <div className="flex items-center gap-4 text-[10px] text-muted-foreground">
               <div className="flex items-center gap-1.5">
                 <Eye className="h-3 w-3" />

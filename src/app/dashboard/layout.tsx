@@ -17,10 +17,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
         <MobileSidebar open={mobileOpen} onClose={() => setMobileOpen(false)} />
 
-        <div className="flex flex-1 flex-col lg:pl-[220px]">
+        <div className="flex flex-1 flex-col lg:pl-[260px]">
           <TopBar onMenuClick={() => setMobileOpen(true)} />
-          <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-            <div className="mx-auto w-full max-w-[1120px]">
+          <main className="flex-1 px-3 py-3 sm:px-5 sm:py-4">
+            <div className="mx-auto w-full max-w-[1280px]">
               {children}
             </div>
           </main>

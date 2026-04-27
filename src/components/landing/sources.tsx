@@ -43,10 +43,10 @@ const sourceCategories = [
 
 export function Sources() {
   return (
-    <section className="relative py-20 sm:py-28 md:py-36 border-t border-border">
-      <div className="mx-auto max-w-[1200px] px-6">
+    <section className="relative py-14 sm:py-28 md:py-36 border-t border-border">
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
         <motion.div
-          className="mx-auto max-w-lg text-center mb-16"
+          className="mx-auto max-w-lg text-center mb-10 sm:mb-16"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
@@ -55,7 +55,7 @@ export function Sources() {
           <p className="mb-4 text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
             Intelligence sources
           </p>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
             We crawl the web so you don&apos;t have to
           </h2>
           <p className="mt-4 text-base text-muted-foreground">
@@ -63,23 +63,23 @@ export function Sources() {
           </p>
         </motion.div>
 
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-3">
           {sourceCategories.map((cat, i) => (
             <motion.div
               key={cat.name}
-              className="rounded-xl border border-border p-5 transition-colors hover:bg-muted/30"
+              className="rounded-xl border border-border p-4 sm:p-5 card-elevated"
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: i * 0.05, duration: 0.5, ease }}
             >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted">
-                  <cat.icon className="h-4 w-4 text-foreground" strokeWidth={1.8} />
+              <div className="flex items-center gap-2.5 sm:gap-3 mb-3 sm:mb-4">
+                <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-muted">
+                  <cat.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-foreground" strokeWidth={1.8} />
                 </div>
-                <h3 className="text-sm font-semibold">{cat.name}</h3>
+                <h3 className="text-xs sm:text-sm font-semibold">{cat.name}</h3>
               </div>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-1 sm:gap-1.5">
                 {cat.sources.map((source) => (
                   <span
                     key={source}
@@ -96,25 +96,6 @@ export function Sources() {
           ))}
         </div>
 
-        <motion.div
-          className="mt-12 flex items-center justify-center gap-10 md:gap-16"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-        >
-          {[
-            { value: "100+", label: "Sources" },
-            { value: "6", label: "Ecosystems" },
-            { value: "<30s", label: "Latency" },
-            { value: "24/7", label: "Uptime" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <p className="text-2xl font-bold tracking-tight tabular-nums">{stat.value}</p>
-              <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
-            </div>
-          ))}
-        </motion.div>
       </div>
     </section>
   );
